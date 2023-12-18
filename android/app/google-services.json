@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "393632820297",
+    "project_id": "newcomer-scu",
+    "storage_bucket": "newcomer-scu.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:393632820297:android:b781a38d3c4bcab60fa398",
+        "android_client_info": {
+          "package_name": "com.example.newcomer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQixUZGXVX7vz4OkANlu5lGox8yCRSYFo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
