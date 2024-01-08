@@ -18,7 +18,7 @@ class UserData {
         id: snap.id,
         hasProfilePic: data['hasProfilePic'] ?? false,
         name: data['name'] ?? "",
-        notificationTokens: data['notificationTokens'].cast<String>());
+        notificationTokens: data['notificationTokens'] ?? []);
   }
 
   Map<String, dynamic> toJson() {

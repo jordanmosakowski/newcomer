@@ -85,15 +85,18 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     User? user = Provider.of<User?>(context);
+    if(user == null) {
+      return Container();
+    }
     return MultiProvider(
       providers: [
-        StreamProvider<List<ChatMessage>>.value(initialData: [], value: stream),
+        StreamProvider<List<ChatMessage>>.value(initialData: const [], value: stream),
         StreamProvider<UserData>.value(
             initialData: UserData(
                 id: "", name: "", hasProfilePic: false, notificationTokens: []),
             value: FirebaseFirestore.instance
                 .collection('users')
-                .doc(user!.uid)
+                .doc(user.uid)
                 .snapshots()
                 .map((snap) => UserData.fromFirestore(snap)))
       ],
@@ -116,6 +119,7 @@ class _ChatPageState extends State<ChatPage> {
                   List<ChatMessage> messages =
                       Provider.of<List<ChatMessage>>(context);
                   UserData userData = Provider.of<UserData>(context);
+                  print(userData.toJson());
                   return ListView.builder(
                     controller: _controller,
                     itemCount: messages.length,
