@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:newcomer/pages/questionnaire.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'login.dart';
 
@@ -15,20 +17,26 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Newcomer',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue,
-          brightness: Brightness.dark,
+    return MultiProvider(
+      providers: [
+        StreamProvider<User?>.value(
+            value: FirebaseAuth.instance.authStateChanges(), initialData: null),
+      ],
+      child: MaterialApp(
+        title: 'Newcomer',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.blue,
+            brightness: Brightness.dark,
+          ),
+          useMaterial3: true,
         ),
-        useMaterial3: true,
+        // home: WelcomeScreen(),
+        routes: {
+          '/': (context) => WelcomeScreen(),
+          '/questionnaire': (context) => const Questionnaire(),
+        },
       ),
-      // home: WelcomeScreen(),
-      routes: {
-        '/': (context) => WelcomeScreen(),
-        '/questionnaire': (context) => const Questionnaire(),
-      },
     );
   }
 }
