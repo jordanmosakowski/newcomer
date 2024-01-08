@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:newcomer/pages/questionnaire.dart';
 import 'firebase_options.dart';
 import 'login.dart';
 
@@ -23,7 +24,11 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: WelcomeScreen(),
+      // home: WelcomeScreen(),
+      routes: {
+        '/': (context) => WelcomeScreen(),
+        '/questionnaire': (context) => const Questionnaire(),
+      },
     );
   }
 }

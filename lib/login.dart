@@ -48,6 +48,7 @@ class WelcomeScreen extends StatelessWidget {
                 User? user = await _handleSignIn();
                 if (user != null) {
                   print('Signed in with Google: ${user.displayName}');
+                  Navigator.pushNamed(context, '/questionnaire');
                 }
               },
               child: Text('Sign in with Google'),

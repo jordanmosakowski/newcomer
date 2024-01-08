@@ -1,5 +1,7 @@
 import 'dart:collection';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:newcomer/classes/interest.dart';
 
@@ -674,7 +676,19 @@ class _QuestionnaireState extends State<Questionnaire> {
                 //   return 
                 // }
                 // return Container();
-              })
+              }),
+              TextButton(
+                onPressed: () => {
+
+                  // made a firestore document in the "questionnaire" collection with the user ID as a document ID, storing all of the form information
+                  FirebaseFirestore.instance.collection("questionnaire").doc(FirebaseAuth.instance.currentUser!.uid).set({
+                    "currentLocation": currentLocation!.id,
+                    "hometown": hometown!.id,
+                    "interests": selectedInterests.map((interest) => interest.id).toList(),
+                  }),
+                },
+                child: Text("Submit")
+              )
             ]
           ),
         ),
