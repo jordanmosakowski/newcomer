@@ -678,14 +678,14 @@ class _QuestionnaireState extends State<Questionnaire> {
                 // return Container();
               }),
               TextButton(
-                onPressed: () => {
-
+                onPressed: () async {
                   // made a firestore document in the "questionnaire" collection with the user ID as a document ID, storing all of the form information
-                  FirebaseFirestore.instance.collection("questionnaire").doc(FirebaseAuth.instance.currentUser!.uid).set({
+                  await FirebaseFirestore.instance.collection("questionnaire").doc(FirebaseAuth.instance.currentUser!.uid).set({
                     "currentLocation": currentLocation!.id,
                     "hometown": hometown!.id,
                     "interests": selectedInterests.map((interest) => interest.id).toList(),
-                  }),
+                  });
+                  Navigator.pushNamed(context, '/chats');
                 },
                 child: Text("Submit")
               )
