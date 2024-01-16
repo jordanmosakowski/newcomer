@@ -93,7 +93,7 @@ class _ChatPageState extends State<ChatPage> {
         StreamProvider<List<ChatMessage>>.value(initialData: const [], value: stream),
         StreamProvider<UserData>.value(
             initialData: UserData(
-                id: "", name: "", hasProfilePic: false, notificationTokens: []),
+                id: "", name: "", hasProfilePic: false, notificationTokens: [], channels: []),
             value: FirebaseFirestore.instance
                 .collection('users')
                 .doc(user.uid)
@@ -119,7 +119,6 @@ class _ChatPageState extends State<ChatPage> {
                   List<ChatMessage> messages =
                       Provider.of<List<ChatMessage>>(context);
                   UserData userData = Provider.of<UserData>(context);
-                  print(userData.toJson());
                   return ListView.builder(
                     controller: _controller,
                     itemCount: messages.length,
@@ -145,8 +144,8 @@ class _ChatPageState extends State<ChatPage> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(25),
                                   color: (messages[index].userId != userData.id
-                                      ? Colors.grey.shade200
-                                      : Colors.green[200]),
+                                      ? Colors.grey[700]
+                                      : Colors.blue[700]),
                                 ),
                                 padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                 constraints: BoxConstraints(maxWidth: 1000),
@@ -170,7 +169,7 @@ class _ChatPageState extends State<ChatPage> {
                     padding: EdgeInsets.only(left: 10, bottom: 10, top: 10),
                     height: 60,
                     width: double.infinity,
-                    color: Colors.white,
+                    color: Colors.grey[900],
                     child: Row(
                       children: <Widget>[
                         SizedBox(width: 15, height: 30),
@@ -198,7 +197,7 @@ class _ChatPageState extends State<ChatPage> {
                             decoration: InputDecoration(
                               hintText: "Write message...",
                               hintStyle: TextStyle(
-                                color: Colors.black54,
+                                color: Colors.white,
                                 fontSize: 24.0,
                               ),
                             ),
@@ -214,7 +213,7 @@ class _ChatPageState extends State<ChatPage> {
                             makeUserMessage(
                                 temporaryString, userData.id, userData.name);
                           },
-                          backgroundColor: Colors.green,
+                          backgroundColor: Colors.blue,
                           elevation: 0,
                           child: Icon(
                             Icons.send,
