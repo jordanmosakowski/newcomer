@@ -43,12 +43,7 @@ class _ChatListState extends State<ChatList> {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Chat List',
-                    style: Theme.of(context).textTheme.displaySmall,
-                  ),
-                  ...userData.channels.map((channel) {
+                children: userData.channels.map((channel) {
                     int depth = channel.split(":").length-1;
                     if(channel.substring(0,4) == "town"){
                       depth--;
@@ -67,8 +62,7 @@ class _ChatListState extends State<ChatList> {
                         Navigator.pushNamed(context,"/chats/$channel");
                       },
                     );
-                  })
-                ],
+                  }).toList(),
               );
             }
           ),

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:newcomer/pages/chat_list.dart';
 import 'package:newcomer/pages/questionnaire.dart';
 import 'package:provider/provider.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
+    final textTheme = ThemeData(brightness: Brightness.dark).textTheme;
     return MultiProvider(
         providers: [
           StreamProvider<User?>.value(
@@ -54,6 +56,9 @@ class MyApp extends StatelessWidget {
           onGenerateRoute: router.generator,
           title: 'Newcomer',
           theme: ThemeData(
+            textTheme: GoogleFonts.redHatDisplayTextTheme(textTheme).copyWith(
+              bodyMedium: GoogleFonts.josefinSans(textStyle: textTheme.bodyMedium),
+            ),
             colorScheme: ColorScheme.fromSeed(
               seedColor: Colors.blue,
               brightness: Brightness.dark,
