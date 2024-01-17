@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -10,20 +11,30 @@ class WelcomeScreen extends StatelessWidget {
 
   Future<User?> _handleSignIn() async {
     try {
-      final GoogleSignInAccount? googleSignInAccount =
+
+      if(kIsWeb) {
+            // Create a new provider
+          GoogleAuthProvider googleProvider = GoogleAuthProvider();
+
+          // Once signed in, return the UserCredential
+          return (await FirebaseAuth.instance.signInWithPopup(googleProvider)).user;
+      }
+      else {
+        final GoogleSignInAccount? googleSignInAccount =
           await googleSignIn.signIn();
-      if (googleSignInAccount != null) {
-        final GoogleSignInAuthentication googleSignInAuthentication =
-            await googleSignInAccount.authentication;
+        if (googleSignInAccount != null) {
+          final GoogleSignInAuthentication googleSignInAuthentication =
+              await googleSignInAccount.authentication;
 
-        final AuthCredential credential = GoogleAuthProvider.credential(
-          accessToken: googleSignInAuthentication.accessToken,
-          idToken: googleSignInAuthentication.idToken,
-        );
+          final AuthCredential credential = GoogleAuthProvider.credential(
+            accessToken: googleSignInAuthentication.accessToken,
+            idToken: googleSignInAuthentication.idToken,
+          );
 
-        final UserCredential authResult =
-            await _auth.signInWithCredential(credential);
-        return authResult.user;
+          final UserCredential authResult =
+              await _auth.signInWithCredential(credential);
+          return authResult.user;
+        }
       }
     } catch (error) {
       print("Error signing in with Google: $error");
