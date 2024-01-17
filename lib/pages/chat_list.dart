@@ -13,8 +13,6 @@ class ChatList extends StatefulWidget {
 }
 
 class _ChatListState extends State<ChatList> {
-
-  
   @override
   Widget build(BuildContext context) {
     User? user = Provider.of<User?>(context);
@@ -35,36 +33,41 @@ class _ChatListState extends State<ChatList> {
           title: const Text('Chats'),
         ),
         body: Center(
-          child: Builder(
-            builder: (context) {
-              UserData userData = Provider.of<UserData>(context);
-              List<String> channels = userData.channels;
-              channels.sort();
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: userData.channels.map((channel) {
-                    int depth = channel.split(":").length-1;
-                    if(channel.substring(0,4) == "town"){
-                      depth--;
-                    }
-                    TextStyle? style = [Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold, decoration: TextDecoration.underline),Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),Theme.of(context).textTheme.titleSmall,Theme.of(context).textTheme.titleSmall,Theme.of(context).textTheme.titleSmall][depth];
-                    return ListTile(
-                      title: Text(interests[channel]?.name ?? "", style: style),
-                      subtitle: Text("2 members"),
-                      onTap: () async {
-                        DocumentSnapshot doc = await FirebaseFirestore.instance.collection("chats").doc(channel).get();
-                        if(!doc.exists) {
-                          await FirebaseFirestore.instance.collection("chats").doc(channel).set({
-                            "title": interests[channel]?.name ?? ""
-                          });
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 600),
+            child: Center(
+              child: Builder(
+                builder: (context) {
+                  UserData userData = Provider.of<UserData>(context);
+                  List<String> channels = userData.channels;
+                  channels.sort();
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: userData.channels.map((channel) {
+                        int depth = channel.split(":").length-1;
+                        if(channel.substring(0,4) == "town"){
+                          depth--;
                         }
-                        Navigator.pushNamed(context,"/chats/$channel");
-                      },
-                    );
-                  }).toList(),
-              );
-            }
+                        TextStyle? style = [Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold, decoration: TextDecoration.underline),Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),Theme.of(context).textTheme.titleSmall,Theme.of(context).textTheme.titleSmall,Theme.of(context).textTheme.titleSmall][depth];
+                        return ListTile(
+                          title: Text(interests[channel]?.name ?? "", style: style),
+                          // subtitle: Text("2 members"),
+                          onTap: () async {
+                            DocumentSnapshot doc = await FirebaseFirestore.instance.collection("chats").doc(channel).get();
+                            if(!doc.exists) {
+                              await FirebaseFirestore.instance.collection("chats").doc(channel).set({
+                                "title": interests[channel]?.name ?? ""
+                              });
+                            }
+                            Navigator.pushNamed(context,"/chats/$channel");
+                          },
+                        );
+                      }).toList(),
+                  );
+                }
+              ),
+            ),
           ),
         ),
       ),
