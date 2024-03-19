@@ -15,6 +15,15 @@ class ChatList extends StatefulWidget {
 
 String? image;
 
+List<String> recommendations = ["Travel","Cooking", "Broncos", "Hiking", "Gardening"];
+List<String> reasons = [
+  "You and Conner Yin share 8 common channels, and he is in Travel", 
+  "Grant Goldman and 1 other from Gaming are also in Cooking",
+  "You and Cameron Greene share 5 common channels, and he is in Broncos",
+  "You and Cole Heider are both in Boulder, CO, and Cole is also in Hiking",
+  "Cameron Greene and 3 others from Santa Clara, CA are also in Gardening"
+];
+
 class _ChatListState extends State<ChatList> {
   @override
   Widget build(BuildContext context) {
@@ -66,9 +75,26 @@ class _ChatListState extends State<ChatList> {
                           userProfile.name,
                         ),
                       ),
+                      ExpansionTile(
+                        leading: Icon(Icons.star),
+                        title: Text("5 recommended channels", style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold, fontSize: 30)),
+                        children: [
+                          for(int i=0; i<recommendations.length; i++)
+                            ListTile(
+                              leading: Icon(Icons.star_border),
+                              title: Text(recommendations[i], style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold)),
+                              subtitle: Text(reasons[i], style: Theme.of(context).textTheme.titleSmall)
+                            )
+                        ],
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.chat),
+                        title: Text("Your chats (7 unread)", style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold, fontSize: 30))
+                      ),
                       Expanded(
                         child: ListView(
                           children: userProfile.channels.map((channel) {
+                              bool bold = (channel.hashCode % 3) < 1;
                               int depth = channel.split(":").length-1;
                               if(channel.substring(0,4) == "town"){
                                 depth--;
@@ -84,8 +110,15 @@ class _ChatListState extends State<ChatList> {
                               return Padding(
                                 padding: EdgeInsets.only(left: depth * 20.0),
                                 child: ListTile(
-                                  leading: Text("#", style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold)),
-                                  title: Text(interests[channel]?.name ?? ""),
+                                  leading: Badge(
+                                    label: Text((channel.hashCode % 7 + 1).toString()),
+                                    isLabelVisible: bold,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text("#", style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold)),
+                                    )
+                                  ),
+                                  title: Text(interests[channel]?.name ?? "", style: bold ? TextStyle(fontWeight: FontWeight.w900) : null),
                                   minLeadingWidth: 10,
                                   // subtitle: Text("2 members"),
                                   onTap: () async {
