@@ -20,7 +20,7 @@ class _ActivitiesState extends State<Activities> {
     const ListTile(
       leading: Icon(Icons.local_activity),
       title: Text("Taylor Swift Concert"),
-      subtitle: Text("Mon, Apr 1, 2024, 7:00 PM (EDT)\n MetLife Stadium"),
+      subtitle: Text("Mon, Apr 1, 2024, 7:00 PM (EDT)\nMetLife Stadium"),
     ),
   ];
 

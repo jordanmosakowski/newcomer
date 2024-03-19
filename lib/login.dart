@@ -112,6 +112,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               password: passwordController.text,
                             );
                             print(credential.user);
+                            if(!credential.user!.emailVerified) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Welcome to newcomer! Please verify your email before continuing.'),
+                                  ),
+                                );
+                                await credential.user!.sendEmailVerification();
+                              }
                             Navigator.pushNamed(context, "/profile");
                           } on FirebaseAuthException catch (e) {
                             print(e.code);
@@ -146,6 +154,18 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               password: passwordController.text,
                             );
                             print(credential.user);
+                            if(credential.user != null) {
+                              if(!credential.user!.emailVerified) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Please verify your email before logging in.'),
+                                  ),
+                                );
+                                await credential.user!.sendEmailVerification();
+                                await FirebaseAuth.instance.signOut();
+                                return;
+                              }
+                            }
                             Navigator.pushNamed(context, "/profile");
                           } on FirebaseAuthException catch (e) {
                             if (e.code == 'user-not-found') {
