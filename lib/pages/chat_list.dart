@@ -20,14 +20,14 @@ class _ChatListState extends State<ChatList> {
       return Container();
     }
     Map<String,Interest> interests = interestMap();
-    return StreamProvider<UserData>.value(
-      initialData: UserData(
+    return StreamProvider<UserProfile>.value(
+      initialData: UserProfile(
           id: "", name: "", hasProfilePic: false, notificationTokens: [], channels: []),
       value: FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
           .snapshots()
-          .map((snap) => UserData.fromFirestore(snap)),
+          .map((snap) => UserProfile.fromFirestore(snap)),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Chats'),
@@ -38,13 +38,13 @@ class _ChatListState extends State<ChatList> {
             child: Center(
               child: Builder(
                 builder: (context) {
-                  UserData userData = Provider.of<UserData>(context);
-                  List<String> channels = userData.channels;
+                  UserProfile userProfile = Provider.of<UserProfile>(context);
+                  List<String> channels = userProfile.channels;
                   channels.sort();
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: userData.channels.map((channel) {
+                    children: userProfile.channels.map((channel) {
                         int depth = channel.split(":").length-1;
                         if(channel.substring(0,4) == "town"){
                           depth--;

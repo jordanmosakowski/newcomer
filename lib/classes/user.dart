@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class UserData {
+class UserProfile {
   String id;
   List<String> notificationTokens;
   List<String> channels;
   String name;
   bool hasProfilePic;
 
-  UserData(
+  UserProfile(
       {required this.id,
       required this.hasProfilePic,
       required this.name,
@@ -15,9 +15,9 @@ class UserData {
       required this.channels,
   });
 
-  static UserData fromFirestore(DocumentSnapshot snap) {
+  static UserProfile fromFirestore(DocumentSnapshot snap) {
     Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
-    return UserData(
+    return UserProfile(
         id: snap.id,
         hasProfilePic: data['hasProfilePic'] ?? false,
         name: data['name'] ?? "",

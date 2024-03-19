@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:newcomer/pages/chat_list.dart';
 import 'package:newcomer/pages/questionnaire.dart';
+import 'package:newcomer/pages/update_user.dart';
 import 'package:provider/provider.dart';
 import 'package:newcomer/pages/chat.dart';
 import 'firebase_options.dart';
@@ -26,9 +27,13 @@ void main() async {
   Handler questionnaireHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
     return const Questionnaire();
   });
+  Handler profileHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+    return const UpdateUserProfile();
+  });
 
   router.define("/", handler: loginHandler);
   router.define("/questionnaire", handler: questionnaireHandler);
+  router.define("/profile", handler: profileHandler);
   router.define("/chats/:id", handler: chatHandler);
   router.define("/chats", handler: chatListHandler);
   router.notFoundHandler = Handler(
@@ -59,6 +64,19 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             textTheme: GoogleFonts.redHatDisplayTextTheme(textTheme).copyWith(
               bodyMedium: GoogleFonts.josefinSans(textStyle: textTheme.bodyMedium),
+            ),
+            appBarTheme: AppBarTheme(
+              backgroundColor: const Color.fromARGB(255, 4, 14, 37)
+            ),
+            elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 60, 60, 60),
+                textStyle: GoogleFonts.redHatDisplay(textStyle: TextStyle(fontSize: 25)),
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.zero
+                ),
+              ),
             ),
             colorScheme: ColorScheme.fromSeed(
               seedColor: Color.fromARGB(255, 4, 14, 37),

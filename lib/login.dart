@@ -125,7 +125,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               password: passwordController.text,
                             );
                             print(credential.user);
-                            Navigator.pushNamed(context, "/questionnaire");
+                            Navigator.pushNamed(context, "/profile");
                           } on FirebaseAuthException catch (e) {
                             print(e.code);
                             if (e.code == 'weak-password') {
@@ -159,7 +159,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               password: passwordController.text,
                             );
                             print(credential.user);
-                            Navigator.pushNamed(context, "/questionnaire");
+                            Navigator.pushNamed(context, "/profile");
                           } on FirebaseAuthException catch (e) {
                             if (e.code == 'user-not-found') {
                               ScaffoldMessenger.of(context).showSnackBar(

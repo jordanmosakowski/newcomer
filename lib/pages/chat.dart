@@ -91,14 +91,14 @@ class _ChatPageState extends State<ChatPage> {
     return MultiProvider(
       providers: [
         StreamProvider<List<ChatMessage>>.value(initialData: const [], value: stream),
-        StreamProvider<UserData>.value(
-            initialData: UserData(
+        StreamProvider<UserProfile>.value(
+            initialData: UserProfile(
                 id: "", name: "", hasProfilePic: false, notificationTokens: [], channels: []),
             value: FirebaseFirestore.instance
                 .collection('users')
                 .doc(user.uid)
                 .snapshots()
-                .map((snap) => UserData.fromFirestore(snap)))
+                .map((snap) => UserProfile.fromFirestore(snap)))
       ],
       child: Scaffold(
         appBar: AppBar(
@@ -118,7 +118,7 @@ class _ChatPageState extends State<ChatPage> {
                 builder: (context) {
                   List<ChatMessage> messages =
                       Provider.of<List<ChatMessage>>(context);
-                  UserData userData = Provider.of<UserData>(context);
+                  UserProfile userProfile = Provider.of<UserProfile>(context);
                   return ListView.builder(
                     controller: _controller,
                     itemCount: messages.length,
@@ -129,21 +129,21 @@ class _ChatPageState extends State<ChatPage> {
                         padding: EdgeInsets.only(
                             left: 14, right: 14, top: 5, bottom: 5),
                         child: Align(
-                          alignment: (messages[index].userId != userData.id
+                          alignment: (messages[index].userId != userProfile.id
                               ? Alignment.topLeft
                               : Alignment.topRight),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              if (messages[index].userId != userData.id)
+                              if (messages[index].userId != userProfile.id)
                                 Text(
                                     '   ${messages[index].userName}     ${DateFormat.jm('en_US').format(messages[index].timeStamp)}',
                                     style: TextStyle(fontSize: 16)),
                               Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(25),
-                                  color: (messages[index].userId != userData.id
+                                  color: (messages[index].userId != userProfile.id
                                       ? Colors.grey[700]
                                       : Colors.blue[700]),
                                 ),
@@ -184,11 +184,11 @@ class _ChatPageState extends State<ChatPage> {
                             focusNode: myFocusNode,
                             onSubmitted: (value) {
                               Future.delayed(Duration(milliseconds: 10), () {
-                                UserData userData = Provider.of<UserData>(
+                                UserProfile userProfile = Provider.of<UserProfile>(
                                     context,
                                     listen: false);
                                 makeUserMessage(
-                                    value, userData.id, userData.name);
+                                    value, userProfile.id, userProfile.name);
                               });
                             },
                             onChanged: (value) {
@@ -208,10 +208,10 @@ class _ChatPageState extends State<ChatPage> {
                         ),
                         FloatingActionButton(
                           onPressed: () {
-                            UserData userData =
-                                Provider.of<UserData>(context, listen: false);
+                            UserProfile userProfile =
+                                Provider.of<UserProfile>(context, listen: false);
                             makeUserMessage(
-                                temporaryString, userData.id, userData.name);
+                                temporaryString, userProfile.id, userProfile.name);
                           },
                           backgroundColor: Colors.blue,
                           elevation: 0,
