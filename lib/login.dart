@@ -163,7 +163,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         }
                       },
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 4, 14, 37)),
+                        backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 4, 14, 80)),
                       ),
                       child: Text("Log in"),
                     ),

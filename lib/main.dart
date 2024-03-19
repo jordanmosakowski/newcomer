@@ -3,6 +3,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:newcomer/pages/activities.dart';
 import 'package:newcomer/pages/chat_list.dart';
 import 'package:newcomer/pages/questionnaire.dart';
 import 'package:newcomer/pages/update_user.dart';
@@ -30,12 +31,16 @@ void main() async {
   Handler profileHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
     return const UpdateUserProfile();
   });
+  Handler activitiesHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+    return Activities(params["id"][0]);
+  });
 
   router.define("/", handler: loginHandler);
   router.define("/questionnaire", handler: questionnaireHandler);
   router.define("/profile", handler: profileHandler);
   router.define("/chats/:id", handler: chatHandler);
   router.define("/chats", handler: chatListHandler);
+  router.define("/activities/:id", handler: activitiesHandler);
   router.notFoundHandler = Handler(
       handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
     return WelcomeScreen();

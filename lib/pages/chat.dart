@@ -110,6 +110,14 @@ class _ChatPageState extends State<ChatPage> {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
             ],
           ),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.calendar_month),
+              onPressed: () {
+                Navigator.pushNamed(context, '/activities/${widget.chatId}');
+              },
+            )
+          ],
         ),
         body: SafeArea(
           child: Stack(
