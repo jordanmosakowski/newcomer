@@ -78,13 +78,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 },
                 decoration: const InputDecoration(
                   labelText: 'Email',
-                  labelStyle: TextStyle(color: Colors.white),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
                 ),
               ),
               Container(height: 20),
@@ -98,13 +91,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 },
                 decoration: const InputDecoration(
                   labelText: 'Password',
-                  labelStyle: TextStyle(color: Colors.white),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
+                  
                 ),
               ),
               SizedBox(height: 20),
@@ -176,7 +163,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         }
                       },
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.blue[900]),
+                        backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 4, 14, 37)),
                       ),
                       child: Text("Log in"),
                     ),

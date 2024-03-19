@@ -140,14 +140,21 @@ class _QuestionnaireState extends State<Questionnaire> {
               }),
               TextButton(
                 onPressed: () async {
+                  if(currentLocation == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please select a current location")));
+                    return;
+                  }
+                  if(hometown == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please select a hometown")));
+                    return;
+                  }
                   // made a firestore document in the "questionnaire" collection with the user ID as a document ID, storing all of the form information
                   await FirebaseFirestore.instance.collection("questionnaire").doc(user.uid).set({
                     "currentLocation": currentLocation!.id,
                     "hometown": hometown!.id,
                     "interests": selectedInterests.map((interest) => interest.id).toList(),
                   });
-                  await FirebaseFirestore.instance.collection("users").doc(user.uid).set({
-                    "name": user.displayName,
+                  await FirebaseFirestore.instance.collection("users").doc(user.uid).update({
                     "channels": {currentLocation!.id,hometown!.id,...selectedInterests.map((interest) => interest.id).toList()}.toList(),
                   });
                   Navigator.pushNamed(context, '/chats');

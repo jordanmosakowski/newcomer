@@ -224,6 +224,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
                                 .doc(user.uid)
                                 .update(profile!.toJson());
                           }
+                          print("SAVED PROFILE");
                           Navigator.pushReplacementNamed(context, "/questionnaire");
                         },
                         child: const Text("Save Profile"),

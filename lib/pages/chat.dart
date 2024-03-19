@@ -145,7 +145,7 @@ class _ChatPageState extends State<ChatPage> {
                                   borderRadius: BorderRadius.circular(25),
                                   color: (messages[index].userId != userProfile.id
                                       ? Colors.grey[700]
-                                      : Colors.blue[700]),
+                                      : Color.fromARGB(255, 4, 14, 37)),
                                 ),
                                 padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                 constraints: BoxConstraints(maxWidth: 1000),
@@ -167,7 +167,7 @@ class _ChatPageState extends State<ChatPage> {
                   alignment: Alignment.bottomLeft,
                   child: Container(
                     padding: EdgeInsets.only(left: 10, bottom: 10, top: 10),
-                    height: 60,
+                    height: 85,
                     width: double.infinity,
                     color: Colors.grey[900],
                     child: Row(
@@ -213,7 +213,7 @@ class _ChatPageState extends State<ChatPage> {
                             makeUserMessage(
                                 temporaryString, userProfile.id, userProfile.name);
                           },
-                          backgroundColor: Colors.blue,
+                          backgroundColor: Color.fromARGB(255, 4, 14, 37),
                           elevation: 0,
                           child: Icon(
                             Icons.send,

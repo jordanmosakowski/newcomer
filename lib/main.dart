@@ -64,9 +64,19 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             textTheme: GoogleFonts.redHatDisplayTextTheme(textTheme).copyWith(
               bodyMedium: GoogleFonts.josefinSans(textStyle: textTheme.bodyMedium),
+              bodyLarge: GoogleFonts.redHatDisplay(textStyle: TextStyle(fontSize: 20, color: Colors.white)),
             ),
-            appBarTheme: AppBarTheme(
-              backgroundColor: const Color.fromARGB(255, 4, 14, 37)
+            appBarTheme: const AppBarTheme(
+              backgroundColor: Color.fromARGB(255, 4, 14, 37)
+            ),
+            inputDecorationTheme: const InputDecorationTheme(
+              labelStyle: TextStyle(color: Colors.white, fontSize: 25),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
             ),
             elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
