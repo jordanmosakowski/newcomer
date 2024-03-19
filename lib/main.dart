@@ -13,6 +13,7 @@ import 'login.dart';
 final router = FluroRouter();
 
 void main() async {
+  await WidgetsFlutterBinding.ensureInitialized();
   Handler chatHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
     return ChatPage(params["id"][0]);
   });
@@ -60,18 +61,11 @@ class MyApp extends StatelessWidget {
               bodyMedium: GoogleFonts.josefinSans(textStyle: textTheme.bodyMedium),
             ),
             colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.blue,
+              seedColor: Color.fromARGB(255, 4, 14, 37),
               brightness: Brightness.dark,
             ),
             useMaterial3: true,
           ),
-          // home: WelcomeScreen(),
-          // routes: {
-          //   '/': (context) => WelcomeScreen(),
-          //   '/questionnaire': (context) => const Questionnaire(),
-          //   '/chats': (context) => const ChatList(),
-          //   '/chat': (context) => const ChatPage("dzxuQznhsKK0FKOyT7Nb"),
-          // },
         ));
   }
 }
