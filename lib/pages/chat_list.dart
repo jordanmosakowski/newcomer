@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:newcomer/classes/interest.dart';
 import 'package:newcomer/classes/user.dart';
@@ -81,7 +82,10 @@ class _ChatListState extends State<ChatList> {
                         children: [
                           for(int i=0; i<recommendations.length; i++)
                             ListTile(
-                              leading: Icon(Icons.star_border),
+                              leading: IconButton(
+                                icon: Icon(Icons.add),
+                                onPressed: () {},
+                              ),
                               title: Text(recommendations[i], style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold)),
                               subtitle: Text(reasons[i], style: Theme.of(context).textTheme.titleSmall)
                             )
@@ -135,6 +139,13 @@ class _ChatListState extends State<ChatList> {
                             }).toList(),
                         ),
                       ),
+                      ListTile(
+                        onTap: () => Navigator.pushNamed(context, "/create"),
+                        leading: Icon(Icons.add),
+                        title: Text("Create new group", style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold, fontSize: 30))
+                      ),
+                      if(!kIsWeb)
+                        Container(height: 50),
                     ],
                   );
                 }

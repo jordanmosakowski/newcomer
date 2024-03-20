@@ -56,151 +56,154 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 4, 14, 37),
       body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxWidth: 400,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/images/templogo2.png', // Replace with the actual path
-                width: 350,
-              ),
-              Container(height: 20),
-              TextField(
-                controller: emailController,
-                onChanged: (_) {
-                  setState(() {
-                  });
-                },
-                decoration: const InputDecoration(
-                  labelText: 'Email',
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: 400,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/templogo2.png', // Replace with the actual path
+                  width: 350,
                 ),
-              ),
-              Container(height: 20),
-              TextField(
-                controller: passwordController,
-                obscureText: true,
-                enableSuggestions: false,
-                autocorrect: false,
-                onChanged: (_) {
-                  setState(() {});
-                },
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  
+                Container(height: 20),
+                TextField(
+                  controller: emailController,
+                  onChanged: (_) {
+                    setState(() {
+                    });
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                  ),
                 ),
-              ),
-              SizedBox(height: 20),
-              AnimatedOpacity(
-                opacity: (EmailValidator.validate(emailController.text) && passwordController.text.isNotEmpty) ? 1.0 : 0.0,
-                duration: const Duration(milliseconds: 500),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () async {
-                        if(EmailValidator.validate(emailController.text) && passwordController.text.isNotEmpty) {
-                          print("Signing up");
-                          try {
-                            final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                              email: emailController.text,
-                              password: passwordController.text,
-                            );
-                            print(credential.user);
-                            if(!credential.user!.emailVerified) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Welcome to newcomer! Please verify your email before continuing.'),
-                                  ),
-                                );
-                                await credential.user!.sendEmailVerification();
-                              }
-                            Navigator.pushNamed(context, "/profile");
-                          } on FirebaseAuthException catch (e) {
-                            print(e.code);
-                            if (e.code == 'weak-password') {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('The password provided is too weak.'),
-                                ),
+                Container(height: 20),
+                TextField(
+                  controller: passwordController,
+                  obscureText: true,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  onChanged: (_) {
+                    setState(() {});
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Password',
+                    
+                  ),
+                ),
+                SizedBox(height: 20),
+                AnimatedOpacity(
+                  opacity: (EmailValidator.validate(emailController.text) && passwordController.text.isNotEmpty) ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 500),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () async {
+                          if(EmailValidator.validate(emailController.text) && passwordController.text.isNotEmpty) {
+                            print("Signing up");
+                            try {
+                              final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                                email: emailController.text,
+                                password: passwordController.text,
                               );
-                            } else if (e.code == 'email-already-in-use') {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('The account already exists for that email.'),
-                                ),
-                              );
-                            }
-                          } catch (e) {
-                            print(e);
-                          }
-                        }
-                      },
-                      child: Text("Sign up"),
-                    ),
-                    SizedBox(width: 20),
-                    ElevatedButton(
-                      onPressed: () async {
-                        if(EmailValidator.validate(emailController.text) && passwordController.text.isNotEmpty) {
-                          print("Logging in");
-                          try {
-                            final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-                              email: emailController.text,
-                              password: passwordController.text,
-                            );
-                            print(credential.user);
-                            if(credential.user != null) {
+                              print(credential.user);
                               if(!credential.user!.emailVerified) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Welcome to newcomer! Please verify your email before continuing.'),
+                                    ),
+                                  );
+                                  await credential.user!.sendEmailVerification();
+                                }
+                              Navigator.pushNamed(context, "/profile");
+                            } on FirebaseAuthException catch (e) {
+                              print(e.code);
+                              if (e.code == 'weak-password') {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text('Please verify your email before logging in.'),
+                                    content: Text('The password provided is too weak.'),
                                   ),
                                 );
-                                await credential.user!.sendEmailVerification();
-                                await FirebaseAuth.instance.signOut();
-                                return;
+                              } else if (e.code == 'email-already-in-use') {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('The account already exists for that email.'),
+                                  ),
+                                );
                               }
-                            }
-                            Navigator.pushNamed(context, "/profile");
-                          } on FirebaseAuthException catch (e) {
-                            if (e.code == 'user-not-found') {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text("No user found for that email.")),
-                              );
-                              print('No user found for that email.');
-                            } else if (e.code == 'wrong-password') {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text("Wrong password provided for that user.")),
-                              );
-                              print('Wrong password provided for that user.');
+                            } catch (e) {
+                              print(e);
                             }
                           }
-                        }
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 4, 14, 80)),
+                        },
+                        child: Text("Sign up"),
                       ),
-                      child: Text("Log in"),
-                    ),
-                  ],
-                ),
-              )
-              // ElevatedButton(
-              //   onPressed: () async {
-              //     User? user = await _handleSignIn();
-              //     if (user != null) {
-              //       print('Signed in with Google: ${user.displayName}');
-              //       Navigator.pushNamed(context, '/questionnaire');
-              //     }
-              //   },
-              //   child: Text('Sign in with Google'),
-              // ),
-            ],
+                      SizedBox(width: 20),
+                      ElevatedButton(
+                        onPressed: () async {
+                          if(EmailValidator.validate(emailController.text) && passwordController.text.isNotEmpty) {
+                            print("Logging in");
+                            try {
+                              final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                                email: emailController.text,
+                                password: passwordController.text,
+                              );
+                              print(credential.user);
+                              if(credential.user != null) {
+                                if(!credential.user!.emailVerified) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Please verify your email before logging in.'),
+                                    ),
+                                  );
+                                  await credential.user!.sendEmailVerification();
+                                  await FirebaseAuth.instance.signOut();
+                                  return;
+                                }
+                              }
+                              Navigator.pushNamed(context, "/profile");
+                            } on FirebaseAuthException catch (e) {
+                              if (e.code == 'user-not-found') {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text("No user found for that email.")),
+                                );
+                                print('No user found for that email.');
+                              } else if (e.code == 'wrong-password') {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text("Wrong password provided for that user.")),
+                                );
+                                print('Wrong password provided for that user.');
+                              }
+                            }
+                          }
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 4, 14, 80)),
+                        ),
+                        child: Text("Log in"),
+                      ),
+                    ],
+                  ),
+                )
+                // ElevatedButton(
+                //   onPressed: () async {
+                //     User? user = await _handleSignIn();
+                //     if (user != null) {
+                //       print('Signed in with Google: ${user.displayName}');
+                //       Navigator.pushNamed(context, '/questionnaire');
+                //     }
+                //   },
+                //   child: Text('Sign in with Google'),
+                // ),
+              ],
+            ),
           ),
         ),
       ),

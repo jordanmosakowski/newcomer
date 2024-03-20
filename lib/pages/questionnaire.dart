@@ -44,124 +44,127 @@ class _QuestionnaireState extends State<Questionnaire> {
         title: const Text("Welcome Questionnaire"),
       ),
       body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 600),
-          child: ListView(
-            children: [
-              Text("Current Location", style: Theme.of(context).textTheme.displaySmall),
-              Autocomplete<Interest>(
-                displayStringForOption: (option) => option.name,
-                optionsBuilder: (TextEditingValue value) {
-                  if(value.text == '') {
-                    return const Iterable<Interest>.empty();
-                  }
-                  return townOptions.where((t){
-                    return t.name.toLowerCase().contains(value.text.toLowerCase());
-                  });
-                },
-                onSelected: (selected) {
-                  currentLocation = selected;
-                },
-              ),
-              Container(height: 25),
-              Text("Hometown", style: Theme.of(context).textTheme.displaySmall),
-              Autocomplete<Interest>(
-                displayStringForOption: (option) => option.name,
-                optionsBuilder: (TextEditingValue value) {
-                  if(value.text == '') {
-                    return const Iterable<Interest>.empty();
-                  }
-                  return townOptions.where((t){
-                    return t.name.toLowerCase().contains(value.text.toLowerCase());
-                  });
-                },
-                onSelected: (selected) {
-                  hometown = selected;
-                },
-              ),
-              Container(height: 25),
-              Text("Interests", style: Theme.of(context).textTheme.displaySmall),
-              Wrap(
-                children: interestOptions.map((interest) {
-                  return Padding(
-                    padding: const EdgeInsets.all(3.0),
-                    child: FilterChip(
-                      label: Text(interest.name),
-                      selected: selectedInterests.contains(interest),
-                      onSelected: (selected) {
-                        setState(() {
-                          if(selected) {
-                            selectedInterests.add(interest);
-                          } else {
-                            selectedInterests.remove(interest);
-                          }
-                        });
-                      },
-                    ),
-                  );
-                }).toList(),
-              ),
-              ...flattenedInterests.map((interest){
-                return AnimatedCrossFade(
-                  duration: const Duration(milliseconds: 300),
-                  firstChild: Container(),
-                  secondChild: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(interest.name),
-                      Wrap(
-                        children: interest.subInterests.map((subInterest) {
-                          return Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child: FilterChip(
-                              label: Text(subInterest.name),
-                              selected: selectedInterests.contains(subInterest),
-                              onSelected: (selected) {
-                                setState(() {
-                                  if(selected) {
-                                    selectedInterests.add(subInterest);
-                                  } else {
-                                    selectedInterests.remove(subInterest);
-                                  }
-                                });
-                              },
-                            ),
-                          );
-                        }).toList(),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 600),
+            child: ListView(
+              children: [
+                Text("Current Location", style: Theme.of(context).textTheme.displaySmall),
+                Autocomplete<Interest>(
+                  displayStringForOption: (option) => option.name,
+                  optionsBuilder: (TextEditingValue value) {
+                    if(value.text == '') {
+                      return const Iterable<Interest>.empty();
+                    }
+                    return townOptions.where((t){
+                      return t.name.toLowerCase().contains(value.text.toLowerCase());
+                    });
+                  },
+                  onSelected: (selected) {
+                    currentLocation = selected;
+                  },
+                ),
+                Container(height: 25),
+                Text("Hometown", style: Theme.of(context).textTheme.displaySmall),
+                Autocomplete<Interest>(
+                  displayStringForOption: (option) => option.name,
+                  optionsBuilder: (TextEditingValue value) {
+                    if(value.text == '') {
+                      return const Iterable<Interest>.empty();
+                    }
+                    return townOptions.where((t){
+                      return t.name.toLowerCase().contains(value.text.toLowerCase());
+                    });
+                  },
+                  onSelected: (selected) {
+                    hometown = selected;
+                  },
+                ),
+                Container(height: 25),
+                Text("Interests", style: Theme.of(context).textTheme.displaySmall),
+                Wrap(
+                  children: interestOptions.map((interest) {
+                    return Padding(
+                      padding: const EdgeInsets.all(3.0),
+                      child: FilterChip(
+                        label: Text(interest.name),
+                        selected: selectedInterests.contains(interest),
+                        onSelected: (selected) {
+                          setState(() {
+                            if(selected) {
+                              selectedInterests.add(interest);
+                            } else {
+                              selectedInterests.remove(interest);
+                            }
+                          });
+                        },
                       ),
-                    ],
-                  ),
-                  crossFadeState: (selectedInterests.contains(interest) && interest.subInterests.isNotEmpty) ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                );
-                // if(interest.subInterests.isNotEmpty) {
-                //   return 
-                // }
-                // return Container();
-              }),
-              TextButton(
-                onPressed: () async {
-                  if(currentLocation == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please select a current location")));
-                    return;
-                  }
-                  if(hometown == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please select a hometown")));
-                    return;
-                  }
-                  // made a firestore document in the "questionnaire" collection with the user ID as a document ID, storing all of the form information
-                  await FirebaseFirestore.instance.collection("questionnaire").doc(user.uid).set({
-                    "currentLocation": currentLocation!.id,
-                    "hometown": hometown!.id,
-                    "interests": selectedInterests.map((interest) => interest.id).toList(),
-                  });
-                  await FirebaseFirestore.instance.collection("users").doc(user.uid).update({
-                    "channels": {currentLocation!.id,hometown!.id,...selectedInterests.map((interest) => interest.id).toList()}.toList(),
-                  });
-                  Navigator.pushNamed(context, '/chats');
-                },
-                child: Text("Submit")
-              )
-            ]
+                    );
+                  }).toList(),
+                ),
+                ...flattenedInterests.map((interest){
+                  return AnimatedCrossFade(
+                    duration: const Duration(milliseconds: 300),
+                    firstChild: Container(),
+                    secondChild: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(interest.name),
+                        Wrap(
+                          children: interest.subInterests.map((subInterest) {
+                            return Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: FilterChip(
+                                label: Text(subInterest.name),
+                                selected: selectedInterests.contains(subInterest),
+                                onSelected: (selected) {
+                                  setState(() {
+                                    if(selected) {
+                                      selectedInterests.add(subInterest);
+                                    } else {
+                                      selectedInterests.remove(subInterest);
+                                    }
+                                  });
+                                },
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+                    crossFadeState: (selectedInterests.contains(interest) && interest.subInterests.isNotEmpty) ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                  );
+                  // if(interest.subInterests.isNotEmpty) {
+                  //   return 
+                  // }
+                  // return Container();
+                }),
+                TextButton(
+                  onPressed: () async {
+                    if(currentLocation == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please select a current location")));
+                      return;
+                    }
+                    if(hometown == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please select a hometown")));
+                      return;
+                    }
+                    // made a firestore document in the "questionnaire" collection with the user ID as a document ID, storing all of the form information
+                    await FirebaseFirestore.instance.collection("questionnaire").doc(user.uid).set({
+                      "currentLocation": currentLocation!.id,
+                      "hometown": hometown!.id,
+                      "interests": selectedInterests.map((interest) => interest.id).toList(),
+                    });
+                    await FirebaseFirestore.instance.collection("users").doc(user.uid).update({
+                      "channels": {currentLocation!.id,hometown!.id,...selectedInterests.map((interest) => interest.id).toList()}.toList(),
+                    });
+                    Navigator.pushNamed(context, '/chats');
+                  },
+                  child: Text("Submit")
+                )
+              ]
+            ),
           ),
         ),
       )
