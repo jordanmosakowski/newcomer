@@ -90,10 +90,17 @@ class _ActivitiesState extends State<Activities> {
                   ],
                 ),
                 Expanded(
-                  child: Column(
+                  child: ListView(
                     children: showUpcoming ? upcomingActivities : pastActivities,
                   ),
                 ),
+                ListTile(
+                  leading: const Icon(Icons.add),
+                  title: Text("Create New Activity"),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/create_activity/${widget.id}');
+                  },
+                )
               ],
             ),
           ),

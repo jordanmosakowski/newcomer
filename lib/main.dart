@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:newcomer/pages/activities.dart';
 import 'package:newcomer/pages/chat_list.dart';
+import 'package:newcomer/pages/create_activity.dart';
 import 'package:newcomer/pages/create_chat.dart';
 import 'package:newcomer/pages/questionnaire.dart';
 import 'package:newcomer/pages/update_user.dart';
@@ -38,6 +39,9 @@ void main() async {
   Handler activitiesHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
     return Activities(params["id"][0]);
   });
+  Handler createActivityHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+    return CreateActivity(params["id"][0]);
+  });
 
   router.define("/", handler: loginHandler);
   router.define("/questionnaire", handler: questionnaireHandler);
@@ -45,6 +49,7 @@ void main() async {
   router.define("/chats/:id", handler: chatHandler);
   router.define("/chats", handler: chatListHandler);
   router.define("/create", handler: createChatHandler);
+  router.define("/create_activity/:id", handler: createActivityHandler);
   router.define("/activities/:id", handler: activitiesHandler);
   router.notFoundHandler = Handler(
       handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
